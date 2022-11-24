@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Bodega</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+</head>
+<body>
+<!--- Nav Bar --->
+<div id="nav">
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">The Bodega</span>
+            <button class="btn btn-primary viewCart" type="button" data-bs-toggle="offcanvas" data-bs-target="#viewCart" aria-controls="viewCart">
+                <span class="badge bg-warning" id="numItems"></span> View Cart
+            </button>
+        </div>
+    </nav>
+</div>
+<!--- End Nav Bar --->
+
+
+<!--- Items section --->
+<div id="body">
+    <div id="items" class="row"></div>
+</div>
+<!--- End Items section --->
+
+
+<!--- Pop up Modal Code When Checkout button is clicked --->
+<!----- Payment Method Modal ----->
+<div class="modal fade" id="paymentInfo" aria-hidden="true" aria-labelledby="paymentInfo" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentInfo_Title"> <i class="bi bi-credit-card-2-front"></i> Payment Information</h5>
+            </div>
+            <div class="modal-body">
+                <label for="cardNum">Card Number</label> <br>
+                <input type="text" id="cardNum" name="cardNum" placeholder="0000-0000-0000-0000" size="25"> <br> <br>
+
+                <label for="expirationMM">Expiration Date</label> <br>
+                <input type="text" id="expirationMM" name="expirationDate" placeholder="MM" size="5">
+                <input type="text" id="expirationYY" name="expirationYY" placeholder="YY" size="5">  <br> <br>
+
+
+                <label for="cvv">CVV</label> <br>
+                <input type="text" id="cvv" name="cvv" placeholder="000" size="5">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary cardCheck" data-bs-target="#billingInfo" data-bs-toggle="modal"><i class="bi bi-person-bounding-box"></i> Billing Information</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!----- End Payment Method Modal ----->
+
+<!----- Billing Information Modal ----->
+<div class="modal fade" id="billingInfo" aria-hidden="true" aria-labelledby="billingInfo" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="billingInfo_Title"><i class="bi bi-person-bounding-box"></i> Billing Information</h5>
+            </div>
+            <div class="modal-body">
+                <label for="firstName">Full Name</label> <br>
+                <input type="text" id="firstName" name="firstName" placeholder="First Name" size="25">
+                <input type="text" id="lastName" name="lastName" placeholder="Last Name" size="25"> <br><br>
+
+
+                <label for="billing_address1">Billing</label> <br>
+                <input type="text" id="billing_address1" name="billing_address1" placeholder="Street Address" size="25">
+                <input type="text" id="billing_address2" name="billing_address2" placeholder="Address # 2 (optional)" size="25"> <br><br>
+
+
+                <label for="billing_country">Country</label> <br>
+                <input type="text" id="billing_country" name="billing_country" placeholder="Country - CA or US" size="25">
+                <input type="text" id="billing_province_state" name="billing_province_state" placeholder="Province/State - BC / AZ" size="25"> <br><br>
+
+
+                <label for="billing_city">City</label><br>
+                <input type="text" id="billing_city" name="billing_city" placeholder="City" size="25">
+                <input type="text" id="billing_postal" name="billing_postal" placeholder="Postal Code" size="25"> <br><br>
+
+                <label for="billing_contact">Contact Information</label><br>
+                <input type="text" id="billing_contact" name="billing_contact" placeholder="(250)-123-4567" size="25">
+                <input type="text" id="billing_email" name="billing_email" placeholder="Email Address.." size="25"> <br><br>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#paymentInfo" data-bs-toggle="modal"><i class="bi bi-credit-card-2-front"></i> Payment Info</button>
+                <button class="btn btn-primary shipping" data-bs-target="#shippingInfo" data-bs-toggle="modal"><i class="bi bi-truck"></i> Shipping Information </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!----- End Billing Information Modal ----->
+
+
+<!----- Shipping Information Modal ----->
+<div class="modal fade" id="shippingInfo" aria-hidden="true" aria-labelledby="shippingInfo" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shippingInfo_Title"><i class="bi bi-truck"></i> Shipping Information</h5>
+             </div>
+            <div class="modal-body">
+                <div id="same_info">
+                    <input type="checkbox" id="shippingDetails" name="shippingDetails">
+                    <label for="shippingDetails">Use Billing Details as Shipping Information</label>
+                </div>
+
+                <div id="differentInfo_from_Billing">
+                    <br>
+                    <label for="shippingFirstName">Full Name</label> <br>
+                    <input type="text" id="shippingFirstName" name="shippingFirstName" placeholder="First Name" size="25">
+                    <input type="text" id="shippingLastName" name="shippingLastName" placeholder="Last Name" size="25"> <br> <br>
+
+                    <label for="shippingAddress">Shipping Address</label> <br>
+                    <input type="text" id="shippingAddress" name="shippingAddress" placeholder="Shipping Address" size="25">
+                    <input type="text" id="shippingAddress2" name="shippingAddress2" placeholder="Address #2 (optional)" size="25"> <br> <br>
+
+                    <label for="shipping_country">Country</label> <br>
+                    <input type="text" id="shipping_country" name="shipping_country" placeholder="Country - US or CA" size="25">
+                    <input type="text" id="shipping_province_state" name="shipping_province_state" placeholder="Province/State - BC / AZ" size="25"> <br><br>
+
+
+                    <label for="shipping_city">City</label><br>
+                    <input type="text" id="shipping_city" name="shipping_city" placeholder="City" size="25">
+                    <input type="text" id="shipping_postal" name="shipping_postal" placeholder="Postal Code" size="25"> <br><br>
+
+                    <label for="shipping_contact">Contact Information</label><br>
+                    <input type="text" id="shipping_contact" name="shipping_contact" placeholder="(250)-123-4567" size="25">
+                    <input type="text" id="shipping_email" name="shipping_email" placeholder="Email Address.." size="25"> <br><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#billingInfo" data-bs-toggle="modal"><i class="bi bi-person-bounding-box"></i> Billing Information</button>
+                <button class="btn btn-primary confirmOrder" data-bs-target="#confirmOrder" data-bs-toggle="modal"><i class="bi bi-bag-check"></i>  Order Confirmation</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!----- End Shipping Information Modal ----->
+
+<!----- Order Confirmation Modal ----->
+<div class="modal fade" id="confirmOrder" aria-hidden="true" aria-labelledby="confirmOrder" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmOrder_Title"><i class="bi bi-bag-check"></i> Confirm Order</h5>
+            </div>
+            <div class="modal-body">
+                <div id="confirmTitle">
+                    <h5>Items: </h5>
+                    <div id="itemConfirmOrder">
+                    </div>
+                </div>
+
+                <br>
+
+                <div id="confirmSubTotal">
+                </div>
+
+                <br>
+
+                <div id="shippingTax">
+                </div>
+
+                <br>
+
+                <div id="tax">
+                </div>
+
+                <br>
+
+                <div id="order_total">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary orderComplete"  data-bs-target="#confirmationMessage" data-bs-toggle="modal"> <i class="bi bi-bag-check"></i>Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  End Order Confirmation Modal -->
+
+<!--  Order Confirmation message -->
+<div class="modal fade" id="confirmationMessage" aria-hidden="true" aria-labelledby="confirmationMessage" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationMessage_Title">Order Confirmed!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body confirmation">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Order Confirmation message -->
+<!-- - End Checkout Section - -->
+
+
+<!--- Cart section --->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="viewCart" aria-labelledby="viewCart">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="shoppingCart_Title">Shopping Cart</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div id="Cart">
+
+            <!------ Currency Selection------>
+            <div id="currencyDiv">
+                <label for="currency"><b>Currency:</b></label>
+                <select id="currency">
+                    <option value="cad">$ CAD</option>
+                </select>
+            </div>
+            <!------ End Currency Selection------>
+
+            <br>
+
+            <!-------- Cart Items in Shopping Cart ------>
+            <div id="itemsInCart">
+                <div id="ItemDescription">
+
+                </div>
+
+                <div>
+                    <p id="subtotal"></p>
+                </div>
+            </div>
+            <!-------- End Cart Items in Shopping Cart ------>
+
+            <!------ Checkout and Empty Cart Buttons----->
+            <button type="button" class="btn btn-outline-success checkoutBtn" data-bs-toggle="modal" data-bs-target="#paymentInfo"> <i class="bi bi-cart-check"></i>  Check Out</button> <span> &#10540; </span>
+            <button class="btn btn-outline-danger clearItemsInCart" type="button"><i class="bi bi-trash"></i> Empty Cart</button>
+            <!------ End Checkout and Empty Cart Buttons ---->
+        </div>
+    </div>
+</div>
+<!--- End Cart section --->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="includes/script.js"></script>
+</body>
+</html>
